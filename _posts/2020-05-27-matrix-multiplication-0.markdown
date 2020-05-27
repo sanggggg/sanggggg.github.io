@@ -7,7 +7,7 @@ categories: matrix_multiplication
 ## 어떤 포스팅인가요?
 병렬 프로그래밍을 활용하여 행렬곱 연산(mat_mul)의 최적화, Speed up 향상 과정을 기록해 보려고 합니다. 사용할 기술 들은 다음과 같습니다.
 
-- Memory / Register Caching 을 통한 최적화
+- Memory locality를 통한 최적화
 - pthread 를 사용한 multithread 환경 speed up
 - OpenCL 를 사용한 GPU 활용 speed up
 - MPI 를 사용한 다중 노드 환경 speed up
@@ -20,3 +20,6 @@ categories: matrix_multiplication
 
 ## performance를 어떻게 측정하나요?
 퍼포먼스의 측정은 일반적으로 (연산의 크기 / 걸린 시간) 으로 볼 수 있습니다. 앞으로의 포스팅에서는 이론상 수행되어야 하는 Floating point operation 의 수(`FLOP`) / 걸린 시간 (`Second`)를 나타내는 `FLOPS` 가 얼마 정도 나왔는지를 통해 퍼포먼스를 측정하려고 합니다.
+
+## Links
+- [Matrix Mutiplication speed up (1) - Memory Locality을 통한 최적화](https://sanggggg.github.io/matrix_multiplication/2020/05/27/matrix-multiplication-1.html)

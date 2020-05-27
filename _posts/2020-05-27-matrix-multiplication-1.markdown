@@ -1,11 +1,11 @@
 ---
 layout: post
-title:  "Matrix Mutiplication speed up (1)"
+title:  "Matrix Mutiplication speed up (1) - Memory Locality을 통한 최적화"
 date:   2020-05-27
 categories: matrix_multiplication
 ---
-## Memory / Register Caching 을 통한 최적화
-이번 포스팅에서는 가장 기본적인 Matrix multiplication 코드를 작성해보고, cache locality를 활용한 speed up을 진행해 볼 예정입니다. 포스팅에서 사용한 코드는 [Github Repository](https://github.com/sanggggg/MatMulSpeedUp)에서 보실 수 있습니다. Performance 측정을 위해 다양한 option을 실행시에 줄 수 있도록 하였으니 참고하셔도 좋을 것 같습니다.
+## Memory Locality을 통한 최적화
+이번 포스팅에서는 가장 기본적인 Matrix multiplication 코드를 작성해보고, memory locality를 활용한 speed up을 진행해 볼 예정입니다. 포스팅에서 사용한 코드는 [Github Repository](https://github.com/sanggggg/MatMulSpeedUp)에서 보실 수 있습니다. Performance 측정을 위해 다양한 option을 실행시에 줄 수 있도록 하였으니 참고하셔도 좋을 것 같습니다.
 
 ## Naive approach
 행렬곱에 대해 가장 naive한 코드를 짠다면 아래와 같습니다.
