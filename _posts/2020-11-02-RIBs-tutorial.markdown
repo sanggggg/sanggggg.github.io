@@ -38,6 +38,7 @@ RIBs 는 앱 전체의 상태를 트리 형태로 나타낸다. 이때 이 트�
 - RIB 에서 사용되는 business logic 을 작성한다.
 - 부모의 상태를 구독하며 특정 로직을 수행하거나, Interactor 와 연결된 View(=presenter) 가 있다면 해당 presenter 와 관련된 event 를 처리할 수 도 있다.
 - 만약 부모의 상태를 변경하는 로직(내려오는 데이터를 수정하거나, 라우팅 자체를 변경하거나 등)이 존재한다면, two-way observe 는 코드가 복잡해 지므로, 일반적으로 Listener 를 정의하고, 부모로 부터 해당 Listener 를 주입받아 부모의 상태를 변경하는 로직을 수행한다.
+
 ```kotlin
 class HappyInteractor {
 
@@ -69,9 +70,11 @@ class HappyInteractor {
     }
 }
 ```
+
 2. Router
 - child RIB 을 붙이거나 떼어내는 routing 을 처리한다.
 - Interactor 으로 부터 새로운 RIB 생성에 대한 책임을 분리하여 interactor 가 과도하게 무거워 지는 것을 방지하고 코드 결합도를 낮춰준다.
+
 ```kotlin
 class HappyRouter(
     val childRibBuilder: ChildRibBuilder
@@ -91,7 +94,6 @@ class HappyRouter(
         }
         childRouter = null
     }
-
 }
 ```
 
@@ -99,6 +101,7 @@ class HappyRouter(
 - Dependency Injection 을 통한 코드 결합도를 낮추기 위한 Factory 라고 볼 수 있다.
 - DI 의 Scope 를 통해 지정하여, child builder 들이 필요로 하는(접근 가능한) 데이터를 제공하는 역할을 한다.
 - Object 생성에 대한 책임을 오로지 Builder 만이 가지고 있으므로 Builder 만 DI library 에 대한 종속성을 가지게 되는 장점이 있다.
+
 ```kotlin
 class HappyBuilder {
 
@@ -118,6 +121,7 @@ class HappyBuilder {
 4. View + Presenter (Optional)
 - RIBs 의 각 노드 RIB 은 데이터에 대한(not UI) State 를 나타내는 노드들이므로, 항상 일대일 대응되는 View 를 가질 필요는 없다.
 - 따라서 View 는 RIB 에서 옵셔널한 Component 로, 해당 View 에 대한 Presenter 을 통해 Interactor 에서 접근 가능한 인터페이스를 제공하는 형태로 작성 가능하다.
+
 ```kotlin
 class HappyView: View(), HappyPresenter {
     // ...
@@ -136,6 +140,7 @@ class HappyView: View(), HappyPresenter {
     }
 }
 ```
+
 > 개인적인 생각으로는 꼭 View + Presenter 의 형태로 View Handling 을 강제할 필요는 없어 보인다. MVVM 에서 제공되는 ViewModel + View 의 형태로도 작성이 가능할 것 같은데... 이 View Handling Component 는 RIBs 와 독립적으로(수직하게?) 다양한 구조를 선택할 수 있을 것 같다.
 
 ## Back to RIBs
