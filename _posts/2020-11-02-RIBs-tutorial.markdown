@@ -2,7 +2,7 @@
 layout: post
 title:  "RIBs Architecture tutorial"
 date:   2020-11-02
-categories: android, ios, RIBs, client 
+categories: android ios RIBs client 
 ---
 
 RIBs 에 대한 깊은 이해가 아직 부족하지만, 처음 Architecture 를 접하는 사람들에게 psuedo code 와 함께 빠른 이해를 돕고자 적어보았다 (+정리하며 다시 복습하기 위해)
