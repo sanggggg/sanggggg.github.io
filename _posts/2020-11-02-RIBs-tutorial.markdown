@@ -1,17 +1,15 @@
 ---
 layout: post
-title:  "RIBs tutorial"
+title:  "RIBs Architecture tutorial"
 date:   2020-11-02
 categories: github.io blog
 ---
 
-# RIBs Architecture
+> RIBs 에 대한 깊은 이해가 아직 부족하지만, 처음 Architecture 를 접하는 사람들에게 psuedo code 와 함께 빠른 이해를 돕고자 적어보았다 (+정리하며 다시 복습하기 위해)
+> 차후에 이해도가 높아진다면 이 글을 다시 쓰게 될 지도 모르겠다 :(
 
-RIBs 에 대한 깊은 이해가 아직 부족하지만, 처음 Architecture 를 접하는 사람들에게 psuedo code 와 함께 빠른 이해를 돕고자 적어보았다 (+정리하며 다시 복습하기 위해)
-차후에 이해도가 높아진다면 이 글을 다시 쓰게 될 지도 모르겠다 :(
-
-## RIBs?
-
+## [RIBs?](https://github.com/uber/RIBs)
+![ribs_logo](/assets/images/ribs_logo.png)
 - Mobile Client Platform 의 비즈니스 로직을 공통으로 관리하기 위해 + 기존 아키텍쳐들에 대한 다양한 개선점을 반영한 아키텍쳐 from Uber
 - 앱 전체의 data flow(state) 를 tree 형태로 나타내고, 앱의 상태 변화를 tree 의 자식을 detach or attach 하는 방식으로 Scoped Data 를 관리한다.
 - MVC, MVP 등 View Logic 중심의 아키텍쳐에서 발생하는 View, Controller 가 비대해 지는 문제에 대해 해결 방향을 제시한다.
@@ -26,6 +24,7 @@ RIBs 에 대한 깊은 이해가 아직 부족하지만, 처음 Architecture 를
 - Uber 의 Guide 를 기준으로 보았을 때, Service 또한 Single Service 가 Background 처리를 담당하게 하며 logic 들은 RIBs 의 Component 위에서 돌아가게 하는 방향을 권장한다.
 
 ## RIB 이란?
+![ribs_architecture.png](/assets/images/ribs_architecture.png)
 
 RIBs 는 앱 전체의 상태를 트리 형태로 나타낸다. 이때 이 트리의 각 노드들을 RIB(Router, Interactor, Builder) 이라고 한다.
 
@@ -143,9 +142,14 @@ class HappyView: View(), HappyPresenter {
 
 > 개인적인 생각으로는 꼭 View + Presenter 의 형태로 View Handling 을 강제할 필요는 없어 보인다. MVVM 에서 제공되는 ViewModel + View 의 형태로도 작성이 가능할 것 같은데... 이 View Handling Component 는 RIBs 와 독립적으로(수직하게?) 다양한 구조를 선택할 수 있을 것 같다.
 
+---
+
 ## Back to RIBs
+![ribs_state_tree](/assets/images/ribs_state_tree.gif)
+
 - 이제 앞서 설명한 RIB의 내부 구조를 잠시 제껴두고 RIB 을 하나의 데이터와 로직을 가지는 노드로 생각하자.
-- 각 노드들은 자신의 상태를 하위 노드 들에게만 전달하는 형태로 코드를 작성하게 된다. 즉 전역 변수를 통한 공유가 아닌 Scope 를 명확히 두고 변수를 공유하는 형태로 작성되기 때문에 RIBs 를 사용하는 경우 잘못된 참조로 인해 메모리가 낭비되거나 예기치 못한 에러가 발생하는 상황들을 막아줄 수 있다.
-- 또한 트리의 형태로 dependency 가 나열되기 때문에 각 노드들에 대해 분업하는 경우 좋은 협업 환경을 제공할 수 있다.
-
-
+    - RIBs 의 각 state 는 state 를 제공하는 노드의 하위 노드들에게 제공되고 있다.
+    - 또한 하위 노드들은 상위 노드의 state 에 따라서 routing(attaching) 된다. 즉 attach 될 때 하위노드는 자신이 필요한 state 데이터가 항상 제공된다는 보장하에 작동하도록 routing 을 설계할 수 도 잇다.
+- 그럼 이런 구조를 통해 어떤 장점을 얻을 수 있는가?
+    - 각 노드들은 자신의 상태를 하위 노드 들에게만 전달하는 형태로 코드를 작성하게 된다. 전역 변수를 통한 공유가 아닌 Scope 를 명확히 두고 변수를 공유하는 형태로 작성되기 때문에 잘못된 참조로 인해 메모리가 낭비되거나 예기치 못한 에러가 발생하는 상황들을 막아줄 수 있다.
+    - 또한 트리의 형태로 dependency 가 나열되기 때문에 각 노드들에 대해  모듈화가 잘 이루어져 좋은 협업 환경을 제공할 수 있다.
